@@ -301,8 +301,11 @@ def hanger_params(res, **kwargs):
     phaseBase = np.poly1d(phaseBaseCoefs)
 
     # Add to resonator object
-    res.phaseBaseline = phaseBase(ffm(res.freq))
-
+    if res.handedness == 'clockwise':
+        res.phaseBaseline = phaseBase(ffm(res.freq))
+    else:
+        res.phaseBaseline = -phaseBase(ffm(res.freq))
+        
     # Set some bounds (resonant frequency should not be within 5% of file end)
     f_min = res.freq[findex_5pc]
     f_max = res.freq[findex_end - findex_5pc]
