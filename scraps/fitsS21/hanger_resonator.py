@@ -145,6 +145,11 @@ def hanger_fit(paramsVec, res, residual=True, **kwargs):
         # Calculate model from params at each point in freqs
         modelCmplx = total_gain * cmplx_hanger(freqs, f0, df, qc, q0) + offset
 
+    # Fit model assumes clockwise loop convention. Therefore if the resonator has a 
+    # counterclockwise handedness, we need to conjugate the model to match the data.
+    if res.handedness == 'counterclockwise':   
+        modelCmplx = np.conj(modelCmplx)
+
     # Package complex data in 1D vector form
     modelI = np.real(modelCmplx)
     modelQ = np.imag(modelCmplx)
@@ -235,6 +240,11 @@ def hanger_params(res, **kwargs):
         resMag = res.mag
         resPhase = res.phase
         resUPhase = res.uphase
+
+    # Negate phase for counterclockwise resonators to match clockwise convention for pgain estimates.
+    if res.handedness == 'counterclockwise':
+        resPhase *= -1
+        resUPhase *= -1
 
     # Get index of last datapoint
     findex_end = len(res.freq) - 1
