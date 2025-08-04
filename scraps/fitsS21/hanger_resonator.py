@@ -145,7 +145,6 @@ def hanger_fit(paramsVec, res, residual=True, **kwargs):
         # Calculate model from params at each point in freqs
         modelCmplx = total_gain * cmplx_hanger(freqs, f0, df, qc, q0) + offset
 
-
     # Package complex data in 1D vector form
     modelI = np.real(modelCmplx)
     modelQ = np.imag(modelCmplx)
@@ -291,6 +290,7 @@ def hanger_params(res, **kwargs):
     phaseBaseCoefs = np.polyfit(freqEnds, phaseEnds, phase_poly_order)
     phaseBase = np.poly1d(phaseBaseCoefs)
 
+    # Add to resonator object
     res.phaseBaseline = phaseBase(ffm(res.freq))
 
     # Set some bounds (resonant frequency should not be within 5% of file end)

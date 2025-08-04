@@ -156,7 +156,7 @@ class Resonator(object):
 
 
     #Do some initialization
-    def __init__(self, name, temp, pwr, freq, I, Q, sigmaI = None, sigmaQ = None, handedness='clockwise'):
+    def __init__(self, name, temp, pwr, freq, I, Q, sigmaI = None, sigmaQ = None):
         r"""Initializes a resonator object by calculating magnitude, phase, and
         a bunch of fit parameters for a hanger (or notch) type S21 measurement.
 
@@ -174,10 +174,6 @@ class Resonator(object):
         self.uphase = np.unwrap(self.phase) #Unwrap the 2pi phase jumps
         self.mag = np.abs(self.S21) #Units are volts.
         self.logmag = 20*np.log10(self.mag) #Units are dB (20 because V->Pwr)
-
-        # Flag to set the handedness of the resonator loop. Dependent on electronic readout configuration.
-        assert handedness in ['clockwise', 'counterclockwise'], "handedness must be either 'clockwise' or 'counterclockwise'."
-        self.handedness = handedness
 
         #Find the frequency at magnitude minimum (this can, and should, be
         #overwritten by a custom params function)
@@ -602,10 +598,8 @@ def makeResFromData(dataDict, paramsFn = None, fitFn = None, fitFn_kwargs=None, 
     else:
         sigmaQ = None
 
-    handedness = dataDict.get('handedness', 'clockwise')
-
     #create Resonator object
-    res = Resonator(resName, temp, pwr, freqData, IData, QData, sigmaI, sigmaQ, handedness)
+    res = Resonator(resName, temp, pwr, freqData, IData, QData, sigmaI, sigmaQ)
 
     #Process the fit parameters
     if paramsFn is not None:
