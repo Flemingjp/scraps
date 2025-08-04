@@ -3,6 +3,8 @@ from scraps.fitsS21 import (
     cmplxIQ_params,
     hanger_fit,
     hanger_params,
+    hanger_ccw_fit,
+    hanger_ccw_params,
     inline_fit,
     inline_params,
     inline_ground_terminated_fit,
